@@ -1,3 +1,5 @@
+// https://miwifi.dev/ssh
+
 function getSTOK() {
   let match = location.href.match(/;stok=(.*?)\//);
   if (!match) {

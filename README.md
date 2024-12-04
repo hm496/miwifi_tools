@@ -40,7 +40,7 @@ config zone
 ## 通过防火墙添加自启动脚本
 > 用于/etc/rc.local文件重启失效的解决办法
 ```
-curl -o /data "https://fastly.jsdelivr.net/gh/mphin/miwifi_tools@main/startup_script.sh"
+curl -o /data "https://fastly.jsdelivr.net/gh/hm496/miwifi_tools@main/startup_script.sh"
 chmod +x /data/startup_script.sh
 /data/startup_script.sh install
 ```

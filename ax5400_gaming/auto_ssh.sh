@@ -14,17 +14,9 @@ unlock() {
     [ "$(nvram get uart_en)" = 0 ] && nvram set uart_en=1 && nvram commit
     [ "$(nvram get boot_wait)" = "off" ]  && nvram set boot_wait=on && nvram commit
 
-    [ "`uci -c /usr/share/xiaoqiang get xiaoqiang_version.version.CHANNEL`" != 'stable' ] && {
-        uci -c /usr/share/xiaoqiang set xiaoqiang_version.version.CHANNEL='stable' 
-        uci -c /usr/share/xiaoqiang commit xiaoqiang_version.version 2>/dev/null
-    }
-
     channel=`/sbin/uci get /usr/share/xiaoqiang/xiaoqiang_version.version.CHANNEL`
     if [ "$channel" = "release" ]; then
         sed -i 's/channel=.*/channel="debug"/g' /etc/init.d/dropbear
-    fi
-
-    if [ -z "$(pidof dropbear)" -o -z "$(netstat -ntul | grep :22)" ]; then
         /etc/init.d/dropbear restart 2>/dev/null
         /etc/init.d/dropbear enable
     fi

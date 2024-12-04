@@ -1,57 +1,19 @@
 # 此页面为通用步骤
-[小米Ax3600相关](https://github.com/mphin/miwifi_tools/tree/main/ax3600/README.md)  
-[红米Ax5400电竞版相关](https://github.com/mphin/miwifi_tools/tree/main/ax5400_gaming/README.md)
+[小米Ax3600相关](https://github.com/hm496/miwifi_tools/tree/main/ax3600/README.md)  
+[红米Ax5400电竞版相关](https://github.com/hm496/miwifi_tools/tree/main/ax5400_gaming/README.md)
 
-[SSH默认密码计算](https://htmlpreview.github.io/?https://github.com/mphin/miwifi_tools/blob/main/miwifi_sn.html)
+[SSH默认密码计算](https://miwifi.dev/ss)
 
-## 新版SSH步骤(理论上AX3000/AX3600/AX9000/万兆路由器/AC2100/AC2350/AX1800/AX5400电竞版/红米AX3000等)：
-> 不含SSH固化  
-
-- 登录路由器后台在地址栏找到stok值，例如：
-<pre>stok=1417c7cb89733ba53b0b0934886caec0</pre>
-stok=<code>1417c7cb89733ba53b0b0934886caec0</code>替换成上面你提取到的 stok=<code>...</code> 以及下文所有192.168.31.1替换成你的路由器后台的IP
-- Windows电脑运行这条命令`cmd (conhost) / Git Bash / WSL` 不要直接CMD，然后替换下面的IP和stok，一条条执行命令：
-```
-curl -X GET "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/misystem/set_sys_time?time=2023-2-19%2023:4:47&timezone=CST-8"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_setting%22%2C%22name%22%3A%22'%24(sed%20-i%20s%2Frelease%2FXXXXXX%2Fg%20%2Fetc%2Finit.d%2Fdropbear)'%22%2C%22action_list%22%3A%5B%7B%22thirdParty%22%3A%22xmrouter%22%2C%22delay%22%3A17%2C%22type%22%3A%22wan_block%22%2C%22payload%22%3A%7B%22command%22%3A%22wan_block%22%2C%22mac%22%3A%2200%3A00%3A00%3A00%3A00%3A00%22%7D%7D%5D%2C%22launch%22%3A%7B%22timer%22%3A%7B%22time%22%3A%223%3A1%22%2C%22repeat%22%3A%220%22%2C%22enabled%22%3Atrue%7D%7D%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_start_by_crontab%22%2C%22time%22%3A%223%3A1%22%2C%22week%22%3A0%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_setting%22%2C%22name%22%3A%22'%24(nvram%20set%20ssh_en%3D1)'%22%2C%22action_list%22%3A%5B%7B%22thirdParty%22%3A%22xmrouter%22%2C%22delay%22%3A17%2C%22type%22%3A%22wan_block%22%2C%22payload%22%3A%7B%22command%22%3A%22wan_block%22%2C%22mac%22%3A%2200%3A00%3A00%3A00%3A00%3A00%22%7D%7D%5D%2C%22launch%22%3A%7B%22timer%22%3A%7B%22time%22%3A%223%3A2%22%2C%22repeat%22%3A%220%22%2C%22enabled%22%3Atrue%7D%7D%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_start_by_crontab%22%2C%22time%22%3A%223%3A2%22%2C%22week%22%3A0%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_setting%22%2C%22name%22%3A%22'%24(nvram%20commit)'%22%2C%22action_list%22%3A%5B%7B%22thirdParty%22%3A%22xmrouter%22%2C%22delay%22%3A17%2C%22type%22%3A%22wan_block%22%2C%22payload%22%3A%7B%22command%22%3A%22wan_block%22%2C%22mac%22%3A%2200%3A00%3A00%3A00%3A00%3A00%22%7D%7D%5D%2C%22launch%22%3A%7B%22timer%22%3A%7B%22time%22%3A%223%3A3%22%2C%22repeat%22%3A%220%22%2C%22enabled%22%3Atrue%7D%7D%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_start_by_crontab%22%2C%22time%22%3A%223%3A3%22%2C%22week%22%3A0%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_setting%22%2C%22name%22%3A%22'%24(%2Fetc%2Finit.d%2Fdropbear%20enable)'%22%2C%22action_list%22%3A%5B%7B%22thirdParty%22%3A%22xmrouter%22%2C%22delay%22%3A17%2C%22type%22%3A%22wan_block%22%2C%22payload%22%3A%7B%22command%22%3A%22wan_block%22%2C%22mac%22%3A%2200%3A00%3A00%3A00%3A00%3A00%22%7D%7D%5D%2C%22launch%22%3A%7B%22timer%22%3A%7B%22time%22%3A%223%3A4%22%2C%22repeat%22%3A%220%22%2C%22enabled%22%3Atrue%7D%7D%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_start_by_crontab%22%2C%22time%22%3A%223%3A4%22%2C%22week%22%3A0%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_setting%22%2C%22name%22%3A%22'%24(%2Fetc%2Finit.d%2Fdropbear%20restart)'%22%2C%22action_list%22%3A%5B%7B%22thirdParty%22%3A%22xmrouter%22%2C%22delay%22%3A17%2C%22type%22%3A%22wan_block%22%2C%22payload%22%3A%7B%22command%22%3A%22wan_block%22%2C%22mac%22%3A%2200%3A00%3A00%3A00%3A00%3A00%22%7D%7D%5D%2C%22launch%22%3A%7B%22timer%22%3A%7B%22time%22%3A%223%3A5%22%2C%22repeat%22%3A%220%22%2C%22enabled%22%3Atrue%7D%7D%7D"
-```
-```
-curl -X POST "http://192.168.31.1/cgi-bin/luci/;stok=1417c7cb89733ba53b0b0934886caec0/api/xqsmarthome/request_smartcontroller" -d "payload=%7B%22command%22%3A%22scene_start_by_crontab%22%2C%22time%22%3A%223%3A5%22%2C%22week%22%3A0%7D"
-```
-完成后获取SSH[默认密码](https://htmlpreview.github.io/?https://github.com/mphin/miwifi_tools/blob/main/miwifi_sn.html)    
-登录SSH后执行命令，请根据实际修改：
+## 新版SSH步骤(理论上AX3000/AX3600/AX6000/AX9000/万兆路由器/AC2100/AC2350/AX1800/AX5400电竞版/红米AX3000等)：
+#### 1. 路由器管理页面-控制台执行: [SSH默认密码计算](https://github.com/hm496/miwifi_tools/blob/main/ssh.js)
+#### 2. 完成后获取SSH[默认密码](https://miwifi.dev/ssh)    
+#### 3. 登录SSH后执行命令，请根据实际修改：
 ```
 date -s "2024-03-11 21:54:30"
 ```
 > ⚠️"2024-03-11 21:54:30"为当前时间，根据实际修改
+#### 4. 到此SSH开启成功，重启会失效，需固化SSH
 
-#### 到此SSH开启成功，重启会失效，需固化SSH
 ## 静态路由防火墙配置：
 开机会失效，需同时添加到在/etc/rc.local文件exit 0前追加   
 > 例如：所有发送到192.168.2.0/24网络的数据包通过网关192.168.31.254进行转发

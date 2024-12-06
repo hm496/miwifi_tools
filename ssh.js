@@ -57,7 +57,7 @@ async function enableSSH() {
   await set_sys_time(stok);
 
   await request_smartcontroller(stok, `nvram set ssh_en=1 && nvram commit`);
-  await request_smartcontroller(stok, `sed -i s/release/XXXXXX/g /etc/init.d/dropbear`);
+  await request_smartcontroller(stok, `sed -i s/release/debug/g /etc/init.d/dropbear`);
   await request_smartcontroller(stok, `/etc/init.d/dropbear enable`);
   await request_smartcontroller(stok, `/etc/init.d/dropbear restart`);
 }

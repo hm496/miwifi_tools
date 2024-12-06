@@ -10,7 +10,6 @@ function getSTOK() {
 
 let timeCount = 0;
 async function request_smartcontroller(stok, command) {
-  command = encodeURIComponent(command);
   let path = `/cgi-bin/luci/;stok=${stok}/api/xqsmarthome/request_smartcontroller`;
   console.log('request_smartcontroller=> stock:%s command:%s', stok, command);
   window.timeCount = window.timeCount ?? 1;
@@ -21,7 +20,7 @@ async function request_smartcontroller(stok, command) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: encodeURIComponent(`payload={"command":"scene_setting","name":"'$(${command})'","action_list":[{"thirdParty":"xmrouter","delay":17,"type":"wan_block","payload":{"command":"wan_block","mac":"00:00:00:00:00:00"}}],"launch":{"timer":{"time":"3:${timeCount}","repeat":"0","enabled":true}}}`),
+    body: `payload=` + encodeURIComponent(`{"command":"scene_setting","name":"'$(${command})'","action_list":[{"thirdParty":"xmrouter","delay":17,"type":"wan_block","payload":{"command":"wan_block","mac":"00:00:00:00:00:00"}}],"launch":{"timer":{"time":"3:${timeCount}","repeat":"0","enabled":true}}}`),
   }))
     .then((response) => response.text())
     .then((text) => console.log(text));
@@ -31,7 +30,7 @@ async function request_smartcontroller(stok, command) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: encodeURIComponent(`payload={"command":"scene_start_by_crontab","time":"3:${timeCount}","week":0}`),
+    body: `payload=` + encodeURIComponent(`{"command":"scene_start_by_crontab","time":"3:${timeCount}","week":0}`),
   }))
     .then((response) => response.text())
     .then((text) => console.log(text));
@@ -57,13 +56,10 @@ async function enableSSH() {
 
   await set_sys_time(stok);
 
-  await request_smartcontroller(stok, `
-nvram set ssh_en=1
-&& nvram commit
-&& sed -i 's/channel=.*/channel=\\"debug\\"/g' /etc/init.d/dropbear
-&& /etc/init.d/dropbear enable
-&& /etc/init.d/dropbear restart
-`);
+  await request_smartcontroller(stok, `nvram set ssh_en=1 && nvram commit`);
+  await request_smartcontroller(stok, `sed -i s/release/XXXXXX/g /etc/init.d/dropbear`);
+  await request_smartcontroller(stok, `/etc/init.d/dropbear enable`);
+  await request_smartcontroller(stok, `/etc/init.d/dropbear restart`);
 }
 
 enableSSH();
